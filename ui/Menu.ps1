@@ -65,6 +65,36 @@ function Read-DownloadUrl {
     return (Read-Host 'Enter video URL')
 }
 
+function Show-PlaylistEntries {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object[]]$Entries,
+
+        [AllowNull()]
+        [string]$PlaylistTitle
+    )
+
+    Write-Host ''
+    if ([string]::IsNullOrWhiteSpace($PlaylistTitle)) {
+        Write-Host 'Playlist detected.' -ForegroundColor Cyan
+    }
+    else {
+        Write-Host "Playlist detected: $PlaylistTitle" -ForegroundColor Cyan
+    }
+
+    Write-Host 'Choose what to download from this playlist:'
+    foreach ($entry in $Entries) {
+        Write-Host ("{0}. {1}" -f $entry.Index, $entry.Title)
+    }
+    Write-Host ''
+}
+
+function Read-PlaylistItemSelection {
+    Write-Host 'Press Enter to download all items.' -ForegroundColor DarkCyan
+    Write-Host 'Type 0 to cancel this download.' -ForegroundColor DarkCyan
+    return (Read-Host 'Enter playlist items (example: 1,3-5)')
+}
+
 function Read-SavePath {
     Write-Host ''
     return (Read-Host 'Enter a folder path')

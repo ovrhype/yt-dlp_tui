@@ -34,8 +34,48 @@ function Invoke-DownloadFlow {
         return
     }
 
+    try {
+        $targetDetails = Get-DownloadTargetDetails -ExecutablePath $ExecutablePath -Url $url
+    }
+    catch {
+        Write-Host ''
+        Write-Host $_.Exception.Message -ForegroundColor Red
+        Suspend-App
+        return
+    }
+
+    $playlistItems = $null
+    if ($targetDetails.IsPlaylist) {
+        if ($targetDetails.Entries.Count -eq 0) {
+            Write-Host ''
+            Write-Host 'Playlist detected, but no items were returned by yt-dlp.' -ForegroundColor Yellow
+            Suspend-App
+            return
+        }
+
+        Show-PlaylistEntries -Entries $targetDetails.Entries -PlaylistTitle $targetDetails.Title
+
+        while ($true) {
+            $playlistSelection = Read-PlaylistItemSelection
+
+            if ($playlistSelection -eq '0') {
+                Write-Host 'Download cancelled.' -ForegroundColor Yellow
+                Suspend-App
+                return
+            }
+
+            try {
+                $playlistItems = ConvertTo-PlaylistItemsArgument -Selection $playlistSelection -MaxIndex $targetDetails.Entries.Count
+                break
+            }
+            catch {
+                Write-Host $_.Exception.Message -ForegroundColor Yellow
+            }
+        }
+    }
+
     $arguments = Get-YtDlpArguments -SelectionState $SelectionState
-    Start-Download -ExecutablePath $ExecutablePath -SavePath $Config.savePath -Arguments $arguments -Url $url -SelectionState $SelectionState
+    Start-Download -ExecutablePath $ExecutablePath -SavePath $Config.savePath -Arguments $arguments -PlaylistItems $playlistItems -Url $url -SelectionState $SelectionState
     Suspend-App
 }
 
