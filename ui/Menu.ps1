@@ -42,16 +42,17 @@ function Show-MainMenu {
     Write-Host "1. $(Get-CheckMark -Selected ($SelectionState.VideoQuality -eq 'Best')) Best"
     Write-Host "2. $(Get-CheckMark -Selected ($SelectionState.VideoQuality -eq '1080p')) 1080p"
     Write-Host "3. $(Get-CheckMark -Selected ($SelectionState.VideoQuality -eq 'AudioOnly')) Audio only"
+    Write-Host "4. $(Get-CheckMark -Selected ($SelectionState.VideoQuality -eq 'AudioOnlyMp3')) Audio only (MP3 format)"
     Write-Host ''
     Write-Host 'Download live stream from start'
-    Write-Host "4. $(Get-CheckMark -Selected (-not $SelectionState.LiveStream)) No"
-    Write-Host "5. $(Get-CheckMark -Selected $SelectionState.LiveStream) Yes"
+    Write-Host "5. $(Get-CheckMark -Selected (-not $SelectionState.LiveStream)) No"
+    Write-Host "6. $(Get-CheckMark -Selected $SelectionState.LiveStream) Yes"
     Write-Host ''
     Write-Host "Current selection: $(Get-SelectionSummary -SelectionState $SelectionState)" -ForegroundColor DarkCyan
     Write-Host ''
-    Write-Host '6. Enter link and download'
-    Write-Host '7. Change save path'
-    Write-Host '8. Refresh screen'
+    Write-Host '7. Enter link and download'
+    Write-Host '8. Change save path'
+    Write-Host '9. Refresh screen'
     Write-Host '0. Exit'
     Write-Host ''
 }

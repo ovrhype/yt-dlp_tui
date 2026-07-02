@@ -101,15 +101,18 @@ while (-not $shouldExit) {
             $selectionState.VideoQuality = 'AudioOnly'
         }
         '4' {
-            $selectionState.LiveStream = $false
+            $selectionState.VideoQuality = 'AudioOnlyMp3'
         }
         '5' {
-            $selectionState.LiveStream = -not $selectionState.LiveStream
+            $selectionState.LiveStream = $false
         }
         '6' {
-            Invoke-DownloadFlow -ExecutablePath $detection.Path -SelectionState $selectionState -Config $config
+            $selectionState.LiveStream = -not $selectionState.LiveStream
         }
         '7' {
+            Invoke-DownloadFlow -ExecutablePath $detection.Path -SelectionState $selectionState -Config $config
+        }
+        '8' {
             $newPath = Read-SavePath
             if ([string]::IsNullOrWhiteSpace($newPath)) {
                 Write-Host 'Path was not changed.' -ForegroundColor Yellow
@@ -122,7 +125,7 @@ while (-not $shouldExit) {
             Write-Host "Save path updated to: $resolvedPath" -ForegroundColor Green
             Suspend-App
         }
-        '8' {
+        '9' {
             continue
         }
         '0' {

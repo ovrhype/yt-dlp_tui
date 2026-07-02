@@ -15,6 +15,7 @@ function Get-VideoQualityLabel {
         'Best' { return 'Best' }
         '1080p' { return '1080p' }
         'AudioOnly' { return 'Audio only' }
+        'AudioOnlyMp3' { return 'Audio only (MP3 format)' }
         default { return 'Best' }
     }
 }
@@ -38,6 +39,11 @@ function Get-YtDlpArguments {
         }
         'AudioOnly' {
             $arguments.Add('--extract-audio')
+        }
+        'AudioOnlyMp3' {
+            $arguments.Add('--extract-audio')
+            $arguments.Add('--audio-format')
+            $arguments.Add('mp3')
         }
     }
 
